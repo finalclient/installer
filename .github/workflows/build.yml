@@ -15,11 +15,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
-      - run: sudo apt-get update && sudo apt-get install -y libgl1-mesa-dev xorg-dev libxkbcommon-dev
+      - run: sudo apt-get update && sudo apt-get install -y libgl1-mesa-dev xorg-dev libxkbcommon-dev libwayland-dev wayland-protocols
       - run: go vet ./...
       - run: go test ./...
 
@@ -39,12 +39,12 @@ jobs:
             file: FinalClient-Installer-linux.tar.xz
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
       - if: matrix.goos == 'linux'
-        run: sudo apt-get update && sudo apt-get install -y libgl1-mesa-dev xorg-dev libxkbcommon-dev
+        run: sudo apt-get update && sudo apt-get install -y libgl1-mesa-dev xorg-dev libxkbcommon-dev libwayland-dev wayland-protocols
       - run: go install fyne.io/tools/cmd/fyne@v1.7.4
       - name: Version aus dem Tag
         shell: bash
@@ -59,7 +59,7 @@ jobs:
             linux)   mv FinalClient-Installer.tar.xz "${{ matrix.file }}" ;;
           esac
           ls -la "${{ matrix.file }}"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.goos }}
           path: ${{ matrix.file }}
@@ -71,7 +71,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           merge-multiple: true
       - run: sha256sum FinalClient-Installer* > SHA256SUMS && cat SHA256SUMS
