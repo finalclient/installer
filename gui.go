@@ -13,7 +13,7 @@ import (
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 
-	"github.com/steedalot/finalclient-installer/internal/install"
+	"github.com/finalclient/installer/internal/install"
 )
 
 // Ein Fenster, ein Knopf. Alles andere passiert von selbst.

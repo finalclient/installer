@@ -213,7 +213,7 @@ func get(ctx context.Context, client *http.Client, u string, limit int64) ([]byt
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("User-Agent", "finalclient-installer (github.com/steedalot/finalclient-installer)")
+	req.Header.Set("User-Agent", "finalclient-installer (github.com/finalclient/installer)")
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err

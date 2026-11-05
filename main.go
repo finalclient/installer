@@ -16,7 +16,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/steedalot/finalclient-installer/internal/install"
+	"github.com/finalclient/installer/internal/install"
 )
 
 //go:embed assets/icon.png

@@ -1,4 +1,4 @@
-module github.com/steedalot/finalclient-installer
+module github.com/finalclient/installer
 
 go 1.27.3
 
