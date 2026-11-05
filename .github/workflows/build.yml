@@ -1,0 +1,80 @@
+# Baut den Installer aus genau diesem Code. Bei einem Tag v* entsteht ein Release
+# mit allen Dateien und SHA256SUMS zum Nachprüfen.
+name: Bauen
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - run: sudo apt-get update && sudo apt-get install -y libgl1-mesa-dev xorg-dev libxkbcommon-dev
+      - run: go vet ./...
+      - run: go test ./...
+
+  build:
+    needs: test
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            goos: windows
+            file: FinalClient-Installer.exe
+          - os: macos-latest
+            goos: darwin
+            file: FinalClient-Installer-mac.zip
+          - os: ubuntu-latest
+            goos: linux
+            file: FinalClient-Installer-linux.tar.xz
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - if: matrix.goos == 'linux'
+        run: sudo apt-get update && sudo apt-get install -y libgl1-mesa-dev xorg-dev libxkbcommon-dev
+      - run: go install fyne.io/tools/cmd/fyne@v1.7.4
+      - name: Version aus dem Tag
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then echo "APPVERSION=--app-version ${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"; fi
+      - name: Paket bauen
+        shell: bash
+        run: |
+          fyne package -os ${{ matrix.goos }} --release $APPVERSION
+          case ${{ matrix.goos }} in
+            darwin)  ditto -c -k --keepParent FinalClient-Installer.app "${{ matrix.file }}" ;;
+            linux)   mv FinalClient-Installer.tar.xz "${{ matrix.file }}" ;;
+          esac
+          ls -la "${{ matrix.file }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.goos }}
+          path: ${{ matrix.file }}
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+      - run: sha256sum FinalClient-Installer* > SHA256SUMS && cat SHA256SUMS
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --generate-notes FinalClient-Installer* SHA256SUMS
