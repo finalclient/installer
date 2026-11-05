@@ -11,7 +11,7 @@ import (
 )
 
 // DefaultSite ist die FinalClient-Website. Dort liegt latest.json mit der aktuellen Version.
-const DefaultSite = "https://finalclient.cartridge.run"
+const DefaultSite = "https://client.finalsmp.net"
 
 // Latest beschreibt die aktuelle Version auf der Website.
 type Latest struct {

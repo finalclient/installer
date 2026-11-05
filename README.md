@@ -1,6 +1,6 @@
 # FinalClient-Installer
 
-Richtet [FinalClient](https://finalclient.cartridge.run) im **offiziellen Minecraft-Launcher** ein. Prism oder ein anderer Launcher ist dafür nicht nötig.
+Richtet [FinalClient](https://client.finalsmp.net) im **offiziellen Minecraft-Launcher** ein. Prism oder ein anderer Launcher ist dafür nicht nötig.
 
 Der Code ist offen, damit jeder nachlesen kann, was das Programm auf dem Rechner macht. Die Downloads unter *Releases* baut GitHub direkt aus diesem Code.
 
