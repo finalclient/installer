@@ -55,7 +55,12 @@ jobs:
         run: |
           fyne package -os ${{ matrix.goos }} --release $APPVERSION
           case ${{ matrix.goos }} in
-            darwin)  ditto -c -k --keepParent FinalClient-Installer.app "${{ matrix.file }}" ;;
+            darwin)
+              # Ganzes App-Paket ad-hoc signieren. Sonst meldet macOS „beschädigt“,
+              # weil nur das Programm darin (vom Go-Linker) signiert ist.
+              codesign --force --deep --sign - --identifier io.gaida.finalclient.installer FinalClient-Installer.app
+              codesign --verify --deep --strict FinalClient-Installer.app
+              ditto -c -k --keepParent FinalClient-Installer.app "${{ matrix.file }}" ;;
             linux)   mv FinalClient-Installer.tar.xz "${{ matrix.file }}" ;;
           esac
           ls -la "${{ matrix.file }}"

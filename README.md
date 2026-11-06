@@ -13,7 +13,7 @@ Der Code ist offen, damit jeder nachlesen kann, was das Programm auf dem Rechner
 Für ein Update startest du den Installer noch mal. Eigene Mods im Ordner `finalclient/mods` bleiben dabei erhalten.
 
 **Windows-Warnung „Der Computer wurde durch Windows geschützt“:** Der Installer ist nicht signiert, denn eine Signatur kostet jedes Jahr Geld. Klicke auf *Weitere Informationen* und dann auf *Trotzdem ausführen*.
-**Mac:** Beim ersten Mal per Rechtsklick → *Öffnen* starten.
+**Mac „kann nicht geöffnet werden“:** *Fertig* klicken, dann *Systemeinstellungen → Datenschutz & Sicherheit* → ganz unten *Dennoch öffnen*. Das ist nur beim ersten Mal nötig.
 
 ## Was das Programm macht
 

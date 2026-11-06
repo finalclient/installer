@@ -3,4 +3,4 @@ Icon = "Icon.png"
 Name = "FinalClient-Installer"
 ID = "io.gaida.finalclient.installer"
 Version = "1.0.0"
-Build = 2
+Build = 3
